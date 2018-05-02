@@ -1,0 +1,5 @@
+---
+- name: "get docker info"
+  shell: docker info
+  register: docker_info
+  changed_when: false

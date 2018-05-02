@@ -1,0 +1,4 @@
+---
+# tasks file for swarm-worker
+- include: docker-info.yml
+- include: swarm-worker.yml
