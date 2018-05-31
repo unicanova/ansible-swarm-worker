@@ -1,38 +1,64 @@
-Role Name
-=========
+# Documentation
 
-A brief description of the role goes here.
+The role connects the host to the docker swarm cluster as the employee
 
-Requirements
-------------
++ [Quickstart](#Quickstart)
++ [Example requiremetns.yml file](#Ex1);
++ [Example host file](#Ex2);
++ [Examoke vars/main.yml](#Ex3);
++ [Playbook variables](#Table1);
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
-Role Variables
---------------
+## <a name="Quickstart"></a> Quickstart
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+[Install ansible](http://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) on the your host
+Install python on the servers, if necessary  
+You need to create a [requirements.yml](#Ex1) file and write down what roles are required in it. Then install roles from this file.
+Install required rolles:  
+```sh
+$ ansible-galaxy install -r requirements.yml
+```
+Clone this repository in your directory:
 
-Dependencies
-------------
+```sh
+$ git clone https://github.com/unicanova/ansible-swarm-worker
+$ cd ansible-users
+```
+Specify host addresses in the file /etc/ansible/hosts.  
+Create a [site.yml](#Ex3) file, where you can specify the users you need to add.  
+In the playbook site.yml you can override varibales according to the [table](#Table1), if necessary.  
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Execute command:  
 
-Example Playbook
-----------------
+```sh
+$ ansible-playbook site.yml -b --extra-vars "ansible_sudo_pass=yourPassword"
+```
+#### <a name="Ex1"></a> Example requirements.yml:
+```sh
+- src: https://github.com/unicanova/ansible-swarm-worker
+  version: master
+  name: ansible-swarm-worker
+```
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+#### <a name="Ex2"></a> Example hosts file:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```sh
+[jenkinsmaster]
+192.168.122.123 ansible_ssh_port=22 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
 
-License
--------
+[jenkinslave]
+192.168.122.77 ansible_ssh_port=22 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
+```
+#### <a name="Ex3"></a> Example site.yml:
+```sh
+- hosts: test
+  roles:
+    - ansible-swarm-worker
+  vars:
+    - swarm_manager_init_host: services.multicast-media.com
+```
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+#### <a name="Table1"></a> Playbook variables
+| Variable name | Variables description |
+| ------------- | --------------------- |
+| swarm_manager_init_host | host to which you need to connect an employee |
