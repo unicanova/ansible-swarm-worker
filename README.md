@@ -22,10 +22,10 @@ Clone this repository in your directory:
 
 ```sh
 $ git clone https://github.com/unicanova/ansible-swarm-worker
-$ cd ansible-users
+$ cd ansible-swarm-worker
 ```
 Specify host addresses in the file /etc/ansible/hosts.  
-Create a [site.yml](#Ex3) file, where you can specify the users you need to add.  
+Create a [site.yml](#Ex3) file, where you can specify the host which you want connet to docker swarm cluster as the employee.  
 In the playbook site.yml you can override varibales according to the [table](#Table1), if necessary.  
 
 Execute command:  
